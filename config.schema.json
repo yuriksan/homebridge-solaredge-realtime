@@ -46,6 +46,12 @@
               "type": "number",
               "required": false,
               "default": "60"
+            },
+            "ratio": {
+              "title": "Multiplier for lux, actual watts are multiplied by this number to return lux",
+              "type": "number",
+              "required", false,
+              "default": "1.0"
             }
           }
         }
