@@ -18,6 +18,7 @@ export class SolaredgeInverter {
   private readonly updateInterval;
   private currentPower;
   private client;
+  private readonly ratio;
 
   private networkErrors = ['ESOCKETTIMEDOUT', 'ETIMEDOUT', 'ECONNRESET', 'ECONNREFUSED', 'EHOSTUNREACH'];
 
@@ -33,6 +34,7 @@ export class SolaredgeInverter {
     this.port = config.port ?? 1502;
     this.updateInterval = config.updateInterval ?? 60;
     this.currentPower = 0.0001;
+    this.ratio = config.ratio;
 
     this.client = new ModbusRTU();
     this.client.setID(1);
@@ -99,8 +101,8 @@ export class SolaredgeInverter {
     };
 
     const pushValue = () => {
-      this.service.updateCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel, this.currentPower);
-      this.platform.log.debug('Updating Ambient Light Level: ', this.currentPower);
+      this.service.updateCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel, this.currentPower * this.ratio);
+      this.platform.log.debug('Updating Ambient Light Level: ', this.currentPower * this.ratio);
     };
 
     const close = () => {
